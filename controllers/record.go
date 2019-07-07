@@ -7,12 +7,12 @@ import (
 	"github.com/astaxie/beego"
 )
 
-//RecordController 1
+//RecordController 记录 相关的控制器
 type RecordController struct {
 	beego.Controller
 }
 
-//Get is
+//Get 获得记录,根据 name 和 date 进行筛选
 func (c *RecordController) Get() {
 	steps := make(map[int64]string)
 	name := c.GetString("name")
@@ -25,7 +25,7 @@ func (c *RecordController) Get() {
 	c.ServeJSON()
 }
 
-//Post is 7
+//Post 提交记录
 func (c *RecordController) Post() {
 	fmt.Println((string)(c.Ctx.Input.RequestBody[:]))
 	var s []byte
