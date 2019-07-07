@@ -4,8 +4,6 @@ import (
 	"WechatSport-go/models"
 	"encoding/json"
 	"fmt"
-	"time"
-
 	"github.com/astaxie/beego"
 )
 
@@ -16,12 +14,14 @@ type RecordController struct {
 
 //Get is
 func (c *RecordController) Get() {
-	fmt.Println(time.Now().Unix())
-	s := c.GetString("name")
-	fmt.Println(s)
-	s = c.GetString("date")
-	fmt.Println(s)
-	c.Data["json"] = s
+	steps := make(map[int64]string)
+	name := c.GetString("name")
+	if name != "" {
+		for _, v := range models.PublicRecord {
+			steps[v.TimeStamp] = v.NameStep[name]
+		}
+	}
+	c.Data["json"] = steps
 	c.ServeJSON()
 }
 
@@ -33,9 +33,8 @@ func (c *RecordController) Post() {
 	var r models.Record
 	json.Unmarshal(s, &r)
 	//fmt.Println(r)
-
 	models.PublicRecord = append(models.PublicRecord, r)
 	//fmt.Println(len(models.PublicRecord))
-	fmt.Println(models.PublicRecord[0])
+	//fmt.Println(models.PublicRecord[0])
 	c.Ctx.WriteString("")
 }
