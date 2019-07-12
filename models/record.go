@@ -56,7 +56,7 @@ func SubmitData(records []Record) {
 		sql += s
 	}
 	sql += ";"
-	//fmt.Println(sql)
+	fmt.Println(sql)
 	db.Query(sql)
 }
 func GetRecords(name string, beginTimeStamp int64, endTimeStamp int64) []Record {
