@@ -63,7 +63,7 @@ func SubmitData(records []Record) {
 	}
 	sql += ";"
 	fmt.Println(sql)
-	db.Query(sql)
+	db.Exec(sql)
 }
 
 //GetRecords 获取记录,根据姓名和起止时间戳进行筛选
