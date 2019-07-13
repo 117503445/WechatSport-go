@@ -66,7 +66,7 @@ func (c *RecordController) Post() {
 	//models.PublicRecord = append(models.PublicRecord, r)
 	//fmt.Println(len(models.PublicRecord))
 	//fmt.Println(models.PublicRecord[0])
-	models.SubmitData(models.JsonToRecords(s))
+	models.SubmitData(models.PostJSONToRecords(s))
 	res := make(map[string]string)
 	res["status_code"] = "200"
 	c.Data["json"] = res

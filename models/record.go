@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strconv"
 
+	//mysql
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -18,18 +19,21 @@ type Record struct {
 
 var db *sql.DB
 
-//默认 port 3306
+//InitDatabase 初始化数据库连接 默认 port 3306
 func InitDatabase(host string, port int, username string, password string) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/", username, password, host, port) //Data Source Name
 	db, _ = sql.Open("mysql", dsn)
-	db.Query("Create Database If Not Exists TestDB Character Set UTF8;")
-	db.Query("create table If Not Exists TestDB.testTB(timestamp BIGINT UNSIGNED, name varchar(10), step int);")
+	db.Exec("Create Database If Not Exists TestDB Character Set UTF8;")
+	db.Exec("create table If Not Exists TestDB.testTB(timestamp BIGINT UNSIGNED, name varchar(10), step int);")
 }
 
-func closeDatabase() {
+//CloseDatabase 关闭数据库连接
+func CloseDatabase() {
 	db.Close()
 }
-func JsonToRecords(js []byte) []Record {
+
+//PostJSONToRecords 将POST得到的JSON数据转换为结构体数组
+func PostJSONToRecords(js []byte) []Record {
 	type temp struct {
 		NameStep  map[string]string
 		TimeStamp int64
@@ -45,6 +49,8 @@ func JsonToRecords(js []byte) []Record {
 	}
 	return result
 }
+
+//SubmitData 向数据库插入新的记录
 func SubmitData(records []Record) {
 	//"(1562503795, '林辰希', '20874'), (1562503795, '钟保明', '10127');"
 	sql := "insert into TestDB.testTB values "
@@ -59,11 +65,15 @@ func SubmitData(records []Record) {
 	fmt.Println(sql)
 	db.Query(sql)
 }
+
+//GetRecords 获取记录,根据姓名和起止时间戳进行筛选
 func GetRecords(name string, beginTimeStamp int64, endTimeStamp int64) []Record {
 	sql := "SELECT * FROM `TestDB`.`testTB`"
 	rows, _ := db.Query(sql)
 	return getRecordsFromRows(rows)
 }
+
+//将返回的Rows转换为结构体数组
 func getRecordsFromRows(query *sql.Rows) []Record {
 
 	var records []Record
