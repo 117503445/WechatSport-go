@@ -69,10 +69,17 @@ func SubmitData(records []Record) {
 //GetRecords 获取记录,根据姓名和起止时间戳进行筛选
 func GetRecords(name string, beginTimeStamp int64, endTimeStamp int64) []Record {
 	fmt.Println(name, beginTimeStamp, endTimeStamp)
-	sql := "SELECT * FROM `TestDB`.`testTB`"
-	if name != "" && beginTimeStamp == 0 {
+	sql := ""
+	if name == "" && beginTimeStamp == 0 {
 		sql = "SELECT * FROM `TestDB`.`testTB`"
 	}
+	if name != "" && beginTimeStamp == 0 {
+		sql = "SELECT * FROM `TestDB`.`testTB` where `name`=" + name
+	}
+	if name == "" && beginTimeStamp != 0 {
+		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10)
+	}
+	fmt.Println(sql)
 	rows, _ := db.Query(sql)
 	return getRecordsFromRows(rows)
 }
