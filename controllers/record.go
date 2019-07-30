@@ -16,8 +16,8 @@ type RecordController struct {
 //Get 获得记录,根据 name 和 beginTimeStamp endTimeStamp 进行筛选
 func (c *RecordController) Get() {
 	name := c.GetString("name")
-	 beginTimeStamp, _ := c.GetInt64("beginTimeStamp")
-	 endTimeStamp, _ := c.GetInt64("endTimeStamp")
+	beginTimeStamp, _ := c.GetInt64("beginTimeStamp")
+	endTimeStamp, _ := c.GetInt64("endTimeStamp")
 
 	// if name == "" && beginTimeStamp == 0 {
 	// 	c.Data["json"] = models.PublicRecord
@@ -51,7 +51,7 @@ func (c *RecordController) Get() {
 	// 	}
 	// 	c.Data["json"] = steps
 	// }
-	c.Data["json"]=models.GetRecords(name,beginTimeStamp,endTimeStamp)
+	c.Data["json"] = models.GetRecords(name, beginTimeStamp, endTimeStamp)
 	c.ServeJSON()
 }
 
