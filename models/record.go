@@ -22,6 +22,7 @@ var db *sql.DB
 //InitDatabase 初始化数据库连接 默认 port 3306
 func InitDatabase(host string, port int, username string, password string) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/", username, password, host, port) //Data Source Name
+	fmt.Println(dsn)
 	db, _ = sql.Open("mysql", dsn)
 	db.Exec("Create Database If Not Exists TestDB Character Set UTF8;")
 	db.Exec("create table If Not Exists TestDB.testTB(timestamp BIGINT UNSIGNED, name varchar(10), step int);")
@@ -75,16 +76,17 @@ func GetRecords(name string, beginTimeStamp int64, endTimeStamp int64) []Record 
 		sql = "SELECT * FROM `TestDB`.`testTB`"
 	}
 	if name != "" && beginTimeStamp == 0 {
-		sql = "SELECT * FROM `TestDB`.`testTB` where `name`=" + name
+		sql = "SELECT * FROM `TestDB`.`testTB` where `name`='" + name + "'"
 	}
 	if name == "" && beginTimeStamp != 0 {
 		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10)
 	}
 	if name != "" && beginTimeStamp != 0 {
-		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10)+" AND `name`="+name
+		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10) + " AND `name`='" + name + "'"
 	}
 	fmt.Println(sql)
 	rows, _ := db.Query(sql)
+	fmt.Println(rows)
 	return getRecordsFromRows(rows)
 }
 
