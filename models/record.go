@@ -73,21 +73,22 @@ func GetRecords(name string, beginTimeStamp int64, endTimeStamp int64) []Record 
 	fmt.Println(name, beginTimeStamp, endTimeStamp)
 	sql := ""
 	if name == "" && beginTimeStamp == 0 {
-		sql = "SELECT * FROM `TestDB`.`testTB`"
+		sql = "SELECT * FROM `TestDB`.`testTB` ORDER BY `timestamp`"
 	}
 	if name != "" && beginTimeStamp == 0 {
-		sql = "SELECT * FROM `TestDB`.`testTB` where `name`='" + name + "'"
+		sql = "SELECT * FROM `TestDB`.`testTB` where `name`='" + name + "' ORDER BY timestamp"
 	}
 	if name == "" && beginTimeStamp != 0 {
-		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10)
+		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10) + " ORDER BY `timestamp`"
 	}
 	if name != "" && beginTimeStamp != 0 {
-		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10) + " AND `name`='" + name + "'"
+		sql = "SELECT * FROM `TestDB`.`testTB` where `timestamp` between " + strconv.FormatInt(beginTimeStamp, 10) + " AND " + strconv.FormatInt(endTimeStamp, 10) + " AND `name`='" + name + "'  ORDER BY `timestamp`"
 	}
 	fmt.Println(sql)
 	rows, _ := db.Query(sql)
-	fmt.Println(rows)
-	return getRecordsFromRows(rows)
+	result := getRecordsFromRows(rows)
+	fmt.Println(result)
+	return result
 }
 
 //将返回的Rows转换为结构体数组
