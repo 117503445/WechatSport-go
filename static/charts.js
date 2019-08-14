@@ -1,19 +1,18 @@
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('main'));
-
+window.onresize=function(){
+    myChart.resize()
+}
 var tdata = []
 
-$.get("http://127.0.0.1/api/record?name=冯凯迪", function (response) {
+$.get("http://127.0.0.1/api/record?name=章赟宸", function (response) {
     //console.log(response)
     for (i = 0; i < response.length; i++) {
         var timeStamp = response[i].TimeStamp
         var step = response[i].Step
         var date = new Date(timeStamp * 1000);
-        console.log(date, step)
         tdata.push({ value: [date, step] });
     }
-    console.log(data)
-    console.log(tdata)
     setOption()
 });
 
@@ -39,7 +38,7 @@ function setOption() {
             }
         },
         series: [{
-            name: '模拟数据',
+            name: 'zyc',
             type: 'line',
             showSymbol: false,
             hoverAnimation: false,
