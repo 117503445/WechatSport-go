@@ -4,24 +4,40 @@
 GET http://{{hostname}}/api HTTP/1.1
 
 @name=冯凯迪
+
 #2019/7/7 00:00:00
 @beginTimeStamp=1562725726
+
 #2019/7/8 00:00:00
 @endTimeStamp=1562725726
+
+
 ###获得所有记录
 GET http://{{hostname}}/api/record
+
+
 ###获得某人的记录，参数都可以省略
 GET http://{{hostname}}/api/record
     ?name={{name}}
+
+
 ###获得某日的记录，参数都可以省略
 GET http://{{hostname}}/api/record
     ?beginTimeStamp={{beginTimeStamp}}
     &endTimeStamp={{endTimeStamp}}
+
+
 ###获得某人某日的记录，参数都可以省略
 GET http://{{hostname}}/api/record
     ?name={{name}}
     &beginTimeStamp={{beginTimeStamp}}
     &endTimeStamp={{endTimeStamp}}
+
+
+###获得所有人的列表
+GET http://{{hostname}}/api/people
+
+
 ###提交记录1 1562503795 2019/7/7 20:49:55
 POST http://{{hostname}}/api/record HTTP/1.1
 

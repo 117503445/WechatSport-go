@@ -12,7 +12,7 @@ type s struct {
 	Name string
 }
 
-//Get is
+//Get 返回 API works
 func (c *APIController) Get() {
 	c.Data["json"] = "API works"
 	c.ServeJSON()

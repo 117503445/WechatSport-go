@@ -95,3 +95,16 @@ func GetRecords(name string, beginTimeStamp int64, endTimeStamp int64) []Record 
 	fmt.Println(records)
 	return records
 }
+
+//GetPeopleList 返回人列表
+func GetPeopleList() []string {
+	sql := "SELECT distinct name FROM `TestDB`.`testTB`"
+	rows, _ := db.Query(sql)
+	var names []string
+	for rows.Next() {
+		var name string
+		rows.Scan(&name)
+		names = append(names, name)
+	}
+	return names
+}

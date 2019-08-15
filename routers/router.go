@@ -7,5 +7,6 @@ import (
 
 func init() {
     beego.Router("/api", &controllers.APIController{})
-    beego.Router("/api/record", &controllers.RecordController{})
+	beego.Router("/api/record", &controllers.RecordController{})
+	beego.Router("/api/people", &controllers.PeopleControllers{})
 }

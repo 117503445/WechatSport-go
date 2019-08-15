@@ -1,8 +1,15 @@
+var today = moment().format('YYYY-MM-DD')
+$('#datepicker').val(today)
 
-
+$.get('/api/people', function (response) {
+    for (var i = 0; i < response.length; i++) {
+        var option = ['<option>', response[i], '</option>'].join('')
+        $('#selectName').append(option)
+    }
+})
 
 // 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById('main'));
+var myChart = echarts.init(document.getElementById('main_chart'))
 window.onresize = function () {
     myChart.resize()
 }
@@ -10,14 +17,30 @@ searchName("117503445")
 
 function searchName(name) {
     data = []
-    $.get("http://127.0.0.1/api/record?name=" + name, function (response) {
-        //console.log(response)
-        for (i = 0; i < response.length; i++) {
-            var timeStamp = response[i].TimeStamp
-            var step = response[i].Step
-            var date = new Date(timeStamp * 1000);
-            data.push({ value: [date, step] });
+
+
+    var date = $('#datepicker').val()
+    var beginTimeStamp = moment(date).unix()
+    var secondsOfDay = 24 * 60 * 60
+    var endTimeStamp = beginTimeStamp + secondsOfDay - 1
+
+    var uri = ["/api/record?name=", name, '&beginTimeStamp=', beginTimeStamp, '&endTimeStamp=', endTimeStamp].join('')
+    console.log(uri)
+
+
+    $.get(uri, function (response) {
+        console.log(response)
+        if (response == null) {
+
+        } else {
+            for (i = 0; i < response.length; i++) {
+                var timeStamp = response[i].TimeStamp
+                var step = response[i].Step
+                var date = new Date(timeStamp * 1000)
+                data.push({ value: [date, step] })
+            }
         }
+
         setOption(name)
     });
 }
@@ -54,9 +77,9 @@ function setOption(name) {
             hoverAnimation: false,
             data: data
         }]
-    };
+    }
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    myChart.setOption(option)
 }
 
 function search() {
