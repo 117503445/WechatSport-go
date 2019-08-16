@@ -1,5 +1,5 @@
-var today = moment().format('YYYY-MM-DD')
-$('#datepicker').val(today)
+
+$('#datepicker').val(moment().format('YYYY-MM-DD'))
 
 $.get('/api/people', function (response) {
     for (var i = 0; i < response.length; i++) {
@@ -13,7 +13,6 @@ var myChart = echarts.init(document.getElementById('main_chart'))
 window.onresize = function () {
     myChart.resize()
 }
-searchName("117503445")
 
 function searchName(name) {
     data = []
@@ -27,9 +26,7 @@ function searchName(name) {
     var uri = ["/api/record?name=", name, '&beginTimeStamp=', beginTimeStamp, '&endTimeStamp=', endTimeStamp].join('')
     console.log(uri)
 
-
     $.get(uri, function (response) {
-        console.log(response)
         if (response == null) {
 
         } else {
@@ -85,5 +82,4 @@ function setOption(name) {
 function search() {
     var name = $('#selectName option:selected').text()
     searchName(name)
-    console.log(name)
 }
